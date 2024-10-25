@@ -31,13 +31,23 @@ def tablero_vacio(fila,columna):
     else:
         return False
 
+#prueba a hacer una lista de las claves que ya has utilizado
+def obtener_emoji_no_repetido(tablero_original):
+    while True:
+        n = random.randint(1, len(emojis))
+        emoji_aleatorio = emojis[n]
+        
+        if emoji_aleatorio not in tablero_original:
+            return emoji_aleatorio
+        else:
+            n = random.randint(1, len(emojis))
+            emoji_aleatorio = emojis[n]
 
 
 def llenar_tablero(fila,columna):
     if tablero_vacio(fila,columna) is True:
         for i in range(int((fila*columna)/2)):
-            n = int(random.randint(1,len(emojis)))
-            emoji_aleatorio = emojis.get(n)
+            emoji_aleatorio = obtener_emoji_no_repetido(tablero_original)
             for n in range(2):
                 while True:
                     fila_aleatoria = random.randint(0,fila-1)
@@ -50,6 +60,6 @@ def llenar_tablero(fila,columna):
                         break
 
 
-llenar_tablero(5,2)
+llenar_tablero(6,5)
 print(tablero_original)
-print(tablero_jugador)
+
