@@ -5,6 +5,9 @@ class Jugador:
     
     def setPuntos(self,puntos):
         self.puntos = puntos
+
+    def setNombre(self, nombre):
+        self.nombre = nombre
     
     def getPuntos(self):
         return self.puntos

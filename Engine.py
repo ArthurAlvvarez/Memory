@@ -8,7 +8,10 @@ class Engine:
             8:"😡",9:"🦘",10:"🐳",11:"🐼",12:"🐺",13:"🦃",14:"🤢",15:"😎"}
         self.tablero_original = []
         self.tablero_jugador = []
+        self.lista_claves = []
         self.usados = []
+        self.p1 = 0
+        self.p2 = 0
 
 
 
@@ -34,6 +37,7 @@ class Engine:
                     rows.append("+")
                 self.tablero_jugador.append(rows.copy())
                 self.tablero_original.append(rows.copy())
+                self.lista_claves.append(rows.copy())
             return True
         else:
             return False
@@ -67,6 +71,7 @@ class Engine:
                             columna_aleatoria = random.randint(0,columna-1)
                         else:
                             self.tablero_original[fila_aleatoria][columna_aleatoria] = emoji_aleatorio
+                            self.lista_claves[fila_aleatoria][columna_aleatoria] = self.usados[i]
                             break
             return True
         return False
@@ -95,11 +100,40 @@ class Engine:
                 print()
                 cont += 1
 
-    def PJvsPJ(self,fila,columna):
+    def comprobar_posicion(self,fila,columna):
+        posiciones = []
+        for i in range (2):
+            self.mostrar_tablero_jugador(fila,columna)
+            f = int(input("Dime la fila: "))
+            c = int(input("Dime la columna: "))
+            while True:
+                if f > fila | c > columna:
+                    print("Esa posicion no está en el tablero")
+                    f = int(input("Dime la fila: "))
+                    c = int(input("Dime la columna: "))
+                elif self.tablero_jugador[f][c] != "+":
+                    print("Esta carta ya está dada la vuelta")
+                    f = int(input("Dime la fila: "))
+                    c = int(input("Dime la columna: "))
+                elif self.tablero_jugador[f][c] == "+":
+                    self.tablero_jugador[f][c] == self.tablero_original[f][c]
+                    posiciones.append(f)
+                    posiciones.append(c)
+                    break
+        if self.lista_claves[posiciones[0]][posiciones[1]] == self.lista_claves[posiciones[2]][posiciones[3]]:
+            return True
+        else:
+            return False
+
+    def PJvsPJ(self,fila,columna,nombre1,nombre2):
         if self.llenar_tablero(fila, columna) is True:
+            parejas = int((fila*columna)/2)
+            while self.p1 + self.p2 < parejas:
+                print(nombre1, " te toca")
+                while self.comprobar_posicion(fila,columna) == True and self.p1 < parejas:
+                    
+
             
-
-
     def play(self):
         opcion = 6
         print("¡Bienvenido a Memory!")
