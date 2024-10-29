@@ -100,9 +100,10 @@ class Engine:
                 print()
                 cont += 1
 
-    def comprobar_posicion(self,fila,columna):
+    def comprobar_posicion(self,fila,columna,nombre):
         posiciones = []
-        for i in range (2):
+        print("Te toca ",nombre)
+        for i in range(2):
             self.mostrar_tablero_jugador(fila,columna)
             f = int(input("Dime la fila: "))
             c = int(input("Dime la columna: "))
@@ -123,15 +124,26 @@ class Engine:
         if self.lista_claves[posiciones[0]][posiciones[1]] == self.lista_claves[posiciones[2]][posiciones[3]]:
             return True
         else:
+            self.tablero_jugador[posiciones[0]][posiciones[1]] == "+"
+            self.tablero_jugador[posiciones[2]][posiciones[3]] == "+"
             return False
 
     def PJvsPJ(self,fila,columna,nombre1,nombre2):
         if self.llenar_tablero(fila, columna) is True:
             parejas = int((fila*columna)/2)
-            while self.p1 + self.p2 < parejas:
-                print(nombre1, " te toca")
-                while self.comprobar_posicion(fila,columna) == True and self.p1 < parejas:
-                    
+            while self.p1 < parejas:
+                while self.comprobar_posicion(fila,columna,nombre1) is True:
+                    self.p1 += 1
+                while self.comprobar_posicion(fila,columna,nombre2) is True:
+                    self.p1 += 1
+            # while self.p1 + self.p2 < parejas:
+                # while self.comprobar_posicion(fila,columna,nombre1) is True:
+                #     self.p1 += 1
+                #     if parejas % 2 == 0:
+                #         if self.p1 == int(parejas % 2) and  self.p2 == int(parejas % 2):
+                            
+
+                        
 
             
     def play(self):
@@ -150,7 +162,10 @@ class Engine:
                     break
                 case 2:
                     nombre2 = input("¿Como se llama el jugador 2?")
-
+                    jugador2 = Jugador(nombre2)
+                    filas = int(input("¿Cuantas filas tendrá el tablero?: "))
+                    columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
+                    print(self.PJvsPJ(filas,columnas,jugador.getNombre(),jugador2.getNombre()))
 
                 # case 3:
                 
