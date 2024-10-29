@@ -89,10 +89,10 @@ class Engine:
         if self.llenar_tablero(fila, columna) is True:
             print("    ", end="")
             for c in range(columna):
-                print(c, end="   ")
+                print(c+1, end="   ")
             print()
 
-            cont = 0
+            cont = 1
             for i in self.tablero_jugador:
                 print(cont, end="   ")
                 for j in i:
@@ -110,8 +110,8 @@ class Engine:
             while True:
                 if f > fila | c > columna:
                     print("Esa posicion no está en el tablero")
-                    f = int(input("Dime la fila: "))
-                    c = int(input("Dime la columna: "))
+                    f = int(input("Dime la fila: ")-1)
+                    c = int(input("Dime la columna: ")-1)
                 elif self.tablero_jugador[f][c] != "+":
                     print("Esta carta ya está dada la vuelta")
                     f = int(input("Dime la fila: "))
