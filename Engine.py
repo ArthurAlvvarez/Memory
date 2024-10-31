@@ -19,13 +19,16 @@ class Engine:
     # Devuelve tambien false si el tamaño no es par o en menor que 2x2.
     def tope(self,fila,columna):
         if fila < 2 or columna < 2:
+            print("El numero de filas y columnas no puede ser menor de 2")
             return False
         if (fila <= 6 and columna <= 5) or (fila <= 5 and columna <= 6):
             if (fila * columna) % 2 == 0:
                 return True
             else:
+                print("El numero de filas x columnas debe ser par")
                 return False
         else:
+            print("El numero de filas y columnas no puede exceder de 6x5 o de 5x6")
             return False
 
     #Crea dos tableros "vacios" segun las filas y columnas que haya pedido el usuario.
@@ -86,7 +89,7 @@ class Engine:
 
     #Metodo que muestra el tablero del jugador con el numero de filas al lado de cada fila y el numero de columnas encima de cada columna.
     def mostrar_tablero_jugador(self, fila, columna):
-        if self.llenar_tablero(fila, columna) is True:
+        if self.crear_tablero(fila, columna) is True:
             print("    ", end="")
             for c in range(columna):
                 print(c+1, end="   ")
@@ -105,27 +108,28 @@ class Engine:
         print("Te toca ",nombre)
         for i in range(2):
             self.mostrar_tablero_jugador(fila,columna)
-            f = int(input("Dime la fila: "))
-            c = int(input("Dime la columna: "))
+            f = int(input("Dime la fila: "))-1
+            c = int(input("Dime la columna: "))-1
             while True:
-                if f > fila | c > columna:
+                if f < 0 or f >= fila or c < 0 or c >= columna:
                     print("Esa posicion no está en el tablero")
-                    f = int(input("Dime la fila: ")-1)
-                    c = int(input("Dime la columna: ")-1)
+                    f = int(input("Dime la fila: "))-1
+                    c = int(input("Dime la columna: "))-1
                 elif self.tablero_jugador[f][c] != "+":
                     print("Esta carta ya está dada la vuelta")
-                    f = int(input("Dime la fila: "))
-                    c = int(input("Dime la columna: "))
+                    f = int(input("Dime la fila: "))-1
+                    c = int(input("Dime la columna: "))-1
                 elif self.tablero_jugador[f][c] == "+":
-                    self.tablero_jugador[f][c] == self.tablero_original[f][c]
+                    self.tablero_jugador[f][c] = self.tablero_original[f][c]
                     posiciones.append(f)
                     posiciones.append(c)
                     break
+            self.mostrar_tablero_jugador(fila,columna)
         if self.lista_claves[posiciones[0]][posiciones[1]] == self.lista_claves[posiciones[2]][posiciones[3]]:
             return True
         else:
-            self.tablero_jugador[posiciones[0]][posiciones[1]] == "+"
-            self.tablero_jugador[posiciones[2]][posiciones[3]] == "+"
+            self.tablero_jugador[posiciones[0]][posiciones[1]] = "+"
+            self.tablero_jugador[posiciones[2]][posiciones[3]] = "+"
             return False
 
     def PJvsPJ(self,fila,columna,nombre1,nombre2):
@@ -163,9 +167,15 @@ class Engine:
                 case 2:
                     nombre2 = input("¿Como se llama el jugador 2?")
                     jugador2 = Jugador(nombre2)
-                    filas = int(input("¿Cuantas filas tendrá el tablero?: "))
-                    columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
-                    print(self.PJvsPJ(filas,columnas,jugador.getNombre(),jugador2.getNombre()))
+                    while True:
+                        filas = int(input("¿Cuantas filas tendrá el tablero?: "))
+                        columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
+                        if self.tope is False:
+                            filas = int(input("¿Cuantas filas tendrá el tablero?: "))
+                            columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
+                        else:
+                            print(self.PJvsPJ(filas,columnas,jugador.getNombre(),jugador2.getNombre()))
+                            break
 
                 # case 3:
                 
