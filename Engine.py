@@ -122,10 +122,6 @@ class Engine:
         
         for i in range(2):
 
-
-            
-
-
             f = int(input("Dime la fila: "))-1
             c = int(input("Dime la columna: "))-1
             while True:
@@ -143,7 +139,6 @@ class Engine:
                     posiciones.append(c)
                     break
 
-
             print("    ", end="")
             for c in range(columna):
                 print(c+1, end="   ")
@@ -156,27 +151,30 @@ class Engine:
                     print(j, end="   ")
                 print()
                 cont += 1
-
-
         if self.lista_claves[posiciones[0]][posiciones[1]] == self.lista_claves[posiciones[2]][posiciones[3]]:
             return True
         else:
             self.tablero_jugador[posiciones[0]][posiciones[1]] = "+"
             self.tablero_jugador[posiciones[2]][posiciones[3]] = "+"
+            print("presiona enter...")
+            input()
             for i in range(20):
                 print()
             return False
+        
 
     def PJvsPJ(self,fila,columna,nombre1,nombre2):
         if self.llenar_tablero(fila, columna) is True:
             parejas = int((fila*columna)/2)
             while self.p1 < parejas:
                 while self.p1 < parejas and self.comprobar_posicion(fila,columna,nombre1) is True:
+                    print("Has acertado la pareja!!!")
                     self.p1 += 1
                     if self.p1 == parejas:
                         print("Has ganado: ", nombre1)
                 while self.p1 < parejas and self.comprobar_posicion(fila,columna,nombre2) is True:
                     self.p1 += 1
+                    print("Has acertado la pareja!!!")
                     if self.p1 == parejas:
                         print("Has ganado: ", nombre2)
             # while self.p1 + self.p2 < parejas:
@@ -197,7 +195,7 @@ class Engine:
 
         while opcion != 0:
             print("Hola ", jugador.getNombre())
-            opcion = int(input("¿Que quieres hacer?: \n 1.Como jugar \n 2.P1 Vs P2 \n 3.P1 Vs CPU \n 4. CPU VS CPU \n 0.Salir"))
+            opcion = int(input("¿Que quieres hacer?: \n 1 .Como jugar \n 2. P1 Vs P2 \n 3. P1 Vs CPU \n 4. CPU VS CPU \n 0.Salir \n"))
 
             match opcion:
                 case 1:
