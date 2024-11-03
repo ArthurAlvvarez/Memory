@@ -106,8 +106,26 @@ class Engine:
     def comprobar_posicion(self,fila,columna,nombre):
         posiciones = []
         print("Te toca ",nombre)
+
+        print("    ", end="")
+        for c in range(columna):
+            print(c+1, end="   ")
+        print()
+
+        cont = 1
+        for i in self.tablero_jugador:
+            print(cont, end="   ")
+            for j in i:
+                print(j, end="   ")
+            print()
+            cont += 1
+        
         for i in range(2):
-            self.mostrar_tablero_jugador(fila,columna)
+
+
+            
+
+
             f = int(input("Dime la fila: "))-1
             c = int(input("Dime la columna: "))-1
             while True:
@@ -124,22 +142,43 @@ class Engine:
                     posiciones.append(f)
                     posiciones.append(c)
                     break
-            self.mostrar_tablero_jugador(fila,columna)
+
+
+            print("    ", end="")
+            for c in range(columna):
+                print(c+1, end="   ")
+            print()
+
+            cont = 1
+            for i in self.tablero_jugador:
+                print(cont, end="   ")
+                for j in i:
+                    print(j, end="   ")
+                print()
+                cont += 1
+
+
         if self.lista_claves[posiciones[0]][posiciones[1]] == self.lista_claves[posiciones[2]][posiciones[3]]:
             return True
         else:
             self.tablero_jugador[posiciones[0]][posiciones[1]] = "+"
             self.tablero_jugador[posiciones[2]][posiciones[3]] = "+"
+            for i in range(20):
+                print()
             return False
 
     def PJvsPJ(self,fila,columna,nombre1,nombre2):
         if self.llenar_tablero(fila, columna) is True:
             parejas = int((fila*columna)/2)
             while self.p1 < parejas:
-                while self.comprobar_posicion(fila,columna,nombre1) is True:
+                while self.p1 < parejas and self.comprobar_posicion(fila,columna,nombre1) is True:
                     self.p1 += 1
-                while self.comprobar_posicion(fila,columna,nombre2) is True:
+                    if self.p1 == parejas:
+                        print("Has ganado: ", nombre1)
+                while self.p1 < parejas and self.comprobar_posicion(fila,columna,nombre2) is True:
                     self.p1 += 1
+                    if self.p1 == parejas:
+                        print("Has ganado: ", nombre2)
             # while self.p1 + self.p2 < parejas:
                 # while self.comprobar_posicion(fila,columna,nombre1) is True:
                 #     self.p1 += 1
@@ -170,7 +209,7 @@ class Engine:
                     while True:
                         filas = int(input("¿Cuantas filas tendrá el tablero?: "))
                         columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
-                        if self.tope is False:
+                        if self.tope(filas,columnas) is False:
                             filas = int(input("¿Cuantas filas tendrá el tablero?: "))
                             columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
                         else:
