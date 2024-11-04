@@ -174,11 +174,13 @@ class Engine:
                     self.p2 += 1
                     print("Has acertado la pareja!!!")
             if self.p1 > self.p2:
-                print("Has ganado: ", nombre1, "puntos: ", self.p1)
+                resultado = f"Has ganado: {nombre1}, puntos: {self.p1}"
             elif self.p1 < self.p2:
-                print("Has ganado: ", nombre2, "puntos: ", self.p2)
-            elif self.p1 == self.p2:
-                print("Empate: ",nombre1, "puntos: ", self.p1," ", nombre2, "puntos: ", self.p2)
+                resultado = f"Has ganado: {nombre2}, puntos: {self.p2}"
+            else:
+                resultado = f"Empate: {nombre1}, puntos: {self.p1} - {nombre2}, puntos: {self.p2}"
+        print(resultado)
+        return resultado
             
                                             
 
@@ -208,7 +210,7 @@ class Engine:
                             filas = int(input("¿Cuantas filas tendrá el tablero?: "))
                             columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
                         else:
-                            print(self.PJvsPJ(filas,columnas,jugador.getNombre(),jugador2.getNombre()))
+                            self.PJvsPJ(filas,columnas,jugador.getNombre(),jugador2.getNombre())
                             break
 
                 # case 3:
