@@ -156,7 +156,7 @@ class Engine:
         else:
             self.tablero_jugador[posiciones[0]][posiciones[1]] = "+"
             self.tablero_jugador[posiciones[2]][posiciones[3]] = "+"
-            print("presiona enter...")
+            print("Has fallado...(enter)")
             input()
             for i in range(20):
                 print()
@@ -166,25 +166,22 @@ class Engine:
     def PJvsPJ(self,fila,columna,nombre1,nombre2):
         if self.llenar_tablero(fila, columna) is True:
             parejas = int((fila*columna)/2)
-            while self.p1 < parejas:
-                while self.p1 < parejas and self.comprobar_posicion(fila,columna,nombre1) is True:
+            while self.p1 + self.p2 < parejas:
+                while self.p1 + self.p2 < parejas and self.comprobar_posicion(fila,columna,nombre1) is True:
                     print("Has acertado la pareja!!!")
                     self.p1 += 1
-                    if self.p1 == parejas:
-                        print("Has ganado: ", nombre1)
-                while self.p1 < parejas and self.comprobar_posicion(fila,columna,nombre2) is True:
-                    self.p1 += 1
+                while self.p1 + self.p2 < parejas and self.comprobar_posicion(fila,columna,nombre2) is True:
+                    self.p2 += 1
                     print("Has acertado la pareja!!!")
-                    if self.p1 == parejas:
-                        print("Has ganado: ", nombre2)
-            # while self.p1 + self.p2 < parejas:
-                # while self.comprobar_posicion(fila,columna,nombre1) is True:
-                #     self.p1 += 1
-                #     if parejas % 2 == 0:
-                #         if self.p1 == int(parejas % 2) and  self.p2 == int(parejas % 2):
-                            
+            if self.p1 > self.p2:
+                print("Has ganado: ", nombre1, "puntos: ", self.p1)
+            elif self.p1 < self.p2:
+                print("Has ganado: ", nombre2, "puntos: ", self.p2)
+            elif self.p1 == self.p2:
+                print("Empate: ",nombre1, "puntos: ", self.p1," ", nombre2, "puntos: ", self.p2)
+            
+                                            
 
-                        
 
             
     def play(self):
