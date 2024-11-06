@@ -194,7 +194,7 @@ class Engine:
                 while self.p1 + self.p2 < parejas and self.comprobar_posicion(fila,columna,nombre1) is True:
                     print("Has acertado la pareja!!!")
                     self.p1 += 1
-                while self.p1 + self.p2 < parejas and self.CPU(columna,fila,modo) is True:
+                while self.p1 + self.p2 < parejas and self.CPU(fila,columna,modo) is True:
                     self.p2 += 1
                     print("La maquina ha hecho pareja")
             if self.p1 > self.p2:
