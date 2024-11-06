@@ -197,18 +197,16 @@ class Engine:
             case "FACIL":
                 for n in range(2):
                     while True:
-                        fila_aleatoria = random.randint(0,fila-1)
-                        columna_aleatoria = random.randint(0,columna-1)
-                        if self.tablero_jugador[fila_aleatoria][columna_aleatoria] != '+':
-                            fila_aleatoria = random.randint(0,fila-1)
-                            columna_aleatoria = random.randint(0,columna-1)
-                        elif self.tablero_jugador[fila_aleatoria][columna_aleatoria] == "+":
+                        fila_aleatoria = random.randint(0, fila-1)
+                        columna_aleatoria = random.randint(0, columna-1)
+                        if self.tablero_jugador[fila_aleatoria][columna_aleatoria] == '+':
                             self.tablero_jugador[fila_aleatoria][columna_aleatoria] = self.tablero_original[fila_aleatoria][columna_aleatoria]
                             posicion.append(fila_aleatoria)
                             posicion.append(columna_aleatoria)
-                            print("La maquina elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
+                            print("La máquina elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
                             input()
                             break
+
                     print("    ", end="")
                     for c in range(columna):
                         print(c+1, end="   ")
