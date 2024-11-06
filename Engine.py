@@ -14,6 +14,14 @@ class Engine:
         self.p2 = 0
 
 
+    def vaciar(self):
+        self.tablero_original = []
+        self.tablero_jugador = []
+        self.lista_claves = []
+        self.usados = []
+        self.p1 = 0
+        self.p2 = 0
+
 
     # Metodo que recibe por parametro el numero de filas y de columnas, si excede las 6 filas y 5 columnas o viceversa devuelve false.
     # Devuelve tambien false si el tamaño no es par o en menor que 2x2.
@@ -181,6 +189,71 @@ class Engine:
                 resultado = f"Empate: {nombre1}, puntos: {self.p1} - {nombre2}, puntos: {self.p2}"
         print(resultado)
         return resultado
+    
+
+    def CPU(self,fila,columna,modo):
+        posicion = []
+        match modo:
+            case "FACIL":
+                for n in range(2):
+                    while True:
+                        fila_aleatoria = random.randint(0,fila-1)
+                        columna_aleatoria = random.randint(0,columna-1)
+                        if self.tablero_jugador[fila_aleatoria][columna_aleatoria] != '+':
+                            fila_aleatoria = random.randint(0,fila-1)
+                            columna_aleatoria = random.randint(0,columna-1)
+                        elif self.tablero_jugador[fila_aleatoria][columna_aleatoria] == "+":
+                            self.tablero_jugador[fila_aleatoria][columna_aleatoria] = self.tablero_original[fila_aleatoria][columna_aleatoria]
+                            posicion.append(fila_aleatoria)
+                            posicion.append(columna_aleatoria)
+                            print("La maquina elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
+                            input()
+                            break
+                    print("    ", end="")
+                    for c in range(columna):
+                        print(c+1, end="   ")
+                    print()
+
+                    cont = 1
+                    for i in self.tablero_jugador:
+                        print(cont, end="   ")
+                        for j in i:
+                            print(j, end="   ")
+                        print()
+                        cont += 1
+                if self.lista_claves[posicion[0]][posicion[1]] == self.lista_claves[posicion[2]][posicion[3]]:
+                    return True
+                else:
+                    self.tablero_jugador[posicion[0]][posicion[1]] = "+"
+                    self.tablero_jugador[posicion[2]][posicion[3]] = "+"
+                    print("Ha fallado la maquina...(enter)")
+                    input()
+                    for i in range(20):
+                        print()
+                return False
+                    
+
+
+
+
+    def PJVsCPU(self,fila,columna,nombre1,modo):
+        if self.llenar_tablero(fila, columna) is True:
+            parejas = int((fila*columna)/2)
+            while self.p1 + self.p2 < parejas:
+                while self.p1 + self.p2 < parejas and self.comprobar_posicion(fila,columna,nombre1) is True:
+                    print("Has acertado la pareja!!!")
+                    self.p1 += 1
+                while self.p1 + self.p2 < parejas and self.CPU(columna,fila,modo) is True:
+                    self.p2 += 1
+                    print("La maquina ha hecho pareja")
+            if self.p1 > self.p2:
+                resultado = f"Has ganado: {nombre1}, puntos: {self.p1}"
+            elif self.p1 < self.p2:
+                resultado = f"Ha ganado la máquina, puntos: {self.p2}"
+            else:
+                resultado = f"Empate: {nombre1}, puntos: {self.p1} - máquina, puntos: {self.p2}"
+        print(resultado)
+        return resultado
             
                                             
 
@@ -193,6 +266,7 @@ class Engine:
         jugador = Jugador(nombre)
 
         while opcion != 0:
+            self.vaciar()
             print("Hola ", jugador.getNombre())
             opcion = int(input("¿Que quieres hacer?: \n 1 .Como jugar \n 2. P1 Vs P2 \n 3. P1 Vs CPU \n 4. CPU VS CPU \n 0.Salir \n"))
 
@@ -213,8 +287,17 @@ class Engine:
                             self.PJvsPJ(filas,columnas,jugador.getNombre(),jugador2.getNombre())
                             break
 
-                # case 3:
-                
+                case 3:
+                    modo = input("Que dificultad tendrá la maquina?: Fácil, Normal o  Difícil")
+                    while True:
+                        filas = int(input("¿Cuantas filas tendrá el tablero?: "))
+                        columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
+                        if self.tope(filas,columnas) is False:
+                            filas = int(input("¿Cuantas filas tendrá el tablero?: "))
+                            columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
+                        else:
+                            self.PJVsCPU(filas,columnas,nombre,modo.upper())
+                            break
                 # case 4:
 
                 case 0:
