@@ -87,7 +87,7 @@ class Engine:
                     print(j, end= "   ")
                 print()
 
-    #Metodo que muestra el tablero del jugador con el numero de filas al lado de cada fila y el numero de columnas encima de cada columna.
+    # Metodo que muestra el tablero del jugador con el numero de filas al lado de cada fila y el numero de columnas encima de cada columna.
     def mostrar_tablero_jugador(self, fila, columna):
         if self.crear_tablero(fila, columna) is True:
             print("    ", end="")
