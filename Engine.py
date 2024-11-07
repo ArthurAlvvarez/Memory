@@ -9,6 +9,7 @@ class Engine:
         self.tablero_original = []
         self.tablero_jugador = []
         self.lista_claves = []
+        self.tablero_cpu = []
         self.usados = []
         self.p1 = 0
         self.p2 = 0
@@ -47,6 +48,7 @@ class Engine:
                 self.tablero_jugador.append(rows.copy())
                 self.tablero_original.append(rows.copy())
                 self.lista_claves.append(rows.copy())
+                self.tablero_cpu.append(rows.copy())
             return True
         else:
             return False
@@ -186,6 +188,12 @@ class Engine:
                     for i in range(20):
                         print()
                     return False
+            case "Normal":
+                desvelados = []
+                numeros = []
+                for i in range(numeros):
+                    numeros.count(i)
+                    
 
     def PJVsCPU(self,fila,columna,nombre1,modo):
         if self.llenar_tablero(fila, columna) is True:
