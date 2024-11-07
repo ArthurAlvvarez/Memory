@@ -18,6 +18,7 @@ class Engine:
         self.tablero_original = []
         self.tablero_jugador = []
         self.lista_claves = []
+        self.tablero_cpu = []
         self.usados = []
         self.p1 = 0
         self.p2 = 0
@@ -48,7 +49,6 @@ class Engine:
                 self.tablero_jugador.append(rows.copy())
                 self.tablero_original.append(rows.copy())
                 self.lista_claves.append(rows.copy())
-                self.tablero_cpu.append(rows.copy())
             return True
         else:
             return False
@@ -135,6 +135,8 @@ class Engine:
         if self.lista_claves[posiciones[0]][posiciones[1]] == self.lista_claves[posiciones[2]][posiciones[3]]:
             return True
         else:
+            self.tablero_cpu.append(self.lista_claves[posiciones[0]][posiciones[1]])
+            self.tablero_cpu.append(self.lista_claves[posiciones[2]][posiciones[3]])
             self.tablero_jugador[posiciones[0]][posiciones[1]] = "+"
             self.tablero_jugador[posiciones[2]][posiciones[3]] = "+"
             print("Has fallado...(enter)")
@@ -189,10 +191,34 @@ class Engine:
                         print()
                     return False
             case "Normal":
-                desvelados = []
-                numeros = []
-                for i in range(numeros):
-                    numeros.count(i)
+                for n in range(2):
+                    while True:
+                        if len(self.tablero_cpu >= 2):
+                            for i in range(len(self.tablero_cpu)):
+                                #aqui tengo que encontrar el primer valor que se repita varias veces y ver en que posicion esta y si la carta no está dada la vuelta
+                        else:        
+                            fila_aleatoria = random.randint(0, fila-1)
+                            columna_aleatoria = random.randint(0, columna-1)
+                        if self.tablero_jugador[fila_aleatoria][columna_aleatoria] == '+':
+                            self.tablero_jugador[fila_aleatoria][columna_aleatoria] = self.tablero_original[fila_aleatoria][columna_aleatoria]
+                            posicion.append(fila_aleatoria)
+                            posicion.append(columna_aleatoria)
+                            print("La máquina elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
+                            input()
+                            break
+                    self.mostrar_tablero_jugador(fila,columna)  
+                if self.lista_claves[posicion[0]][posicion[1]] == self.lista_claves[posicion[2]][posicion[3]]:
+                    return True
+                else:
+                    self.tablero_cpu.append(self.lista_claves[posicion[0]][posicion[1]])
+                    self.tablero_cpu.append(self.lista_claves[posicion[2]][posicion[3]])
+                    self.tablero_jugador[posicion[0]][posicion[1]] = "+"
+                    self.tablero_jugador[posicion[2]][posicion[3]] = "+"
+                    print("Ha fallado la maquina...(enter)")
+                    input()
+                    for i in range(20):
+                        print()
+                    return False
                     
 
     def PJVsCPU(self,fila,columna,nombre1,modo):
