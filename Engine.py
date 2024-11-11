@@ -190,35 +190,35 @@ class Engine:
                     for i in range(20):
                         print()
                     return False
-            case "Normal":
-                for n in range(2):
-                    while True:
-                        if len(self.tablero_cpu >= 2):
-                            for i in range(len(self.tablero_cpu)):
-                                #aqui tengo que encontrar el primer valor que se repita varias veces y ver en que posicion esta y si la carta no está dada la vuelta
-                        else:        
-                            fila_aleatoria = random.randint(0, fila-1)
-                            columna_aleatoria = random.randint(0, columna-1)
-                        if self.tablero_jugador[fila_aleatoria][columna_aleatoria] == '+':
-                            self.tablero_jugador[fila_aleatoria][columna_aleatoria] = self.tablero_original[fila_aleatoria][columna_aleatoria]
-                            posicion.append(fila_aleatoria)
-                            posicion.append(columna_aleatoria)
-                            print("La máquina elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
-                            input()
-                            break
-                    self.mostrar_tablero_jugador(fila,columna)  
-                if self.lista_claves[posicion[0]][posicion[1]] == self.lista_claves[posicion[2]][posicion[3]]:
-                    return True
-                else:
-                    self.tablero_cpu.append(self.lista_claves[posicion[0]][posicion[1]])
-                    self.tablero_cpu.append(self.lista_claves[posicion[2]][posicion[3]])
-                    self.tablero_jugador[posicion[0]][posicion[1]] = "+"
-                    self.tablero_jugador[posicion[2]][posicion[3]] = "+"
-                    print("Ha fallado la maquina...(enter)")
-                    input()
-                    for i in range(20):
-                        print()
-                    return False
+            # case "Normal":
+            #     for n in range(2):
+            #         while True:
+            #             if len(self.tablero_cpu >= 2):
+            #                 for i in range(len(self.tablero_cpu)):
+            #                     #aqui tengo que encontrar el primer valor que se repita varias veces y ver en que posicion esta y si la carta no está dada la vuelta
+            #             else:        
+            #                 fila_aleatoria = random.randint(0, fila-1)
+            #                 columna_aleatoria = random.randint(0, columna-1)
+            #             if self.tablero_jugador[fila_aleatoria][columna_aleatoria] == '+':
+            #                 self.tablero_jugador[fila_aleatoria][columna_aleatoria] = self.tablero_original[fila_aleatoria][columna_aleatoria]
+            #                 posicion.append(fila_aleatoria)
+            #                 posicion.append(columna_aleatoria)
+            #                 print("La máquina elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
+            #                 input()
+            #                 break
+            #         self.mostrar_tablero_jugador(fila,columna)  
+            #     if self.lista_claves[posicion[0]][posicion[1]] == self.lista_claves[posicion[2]][posicion[3]]:
+            #         return True
+            #     else:
+            #         self.tablero_cpu.append(self.lista_claves[posicion[0]][posicion[1]])
+            #         self.tablero_cpu.append(self.lista_claves[posicion[2]][posicion[3]])
+            #         self.tablero_jugador[posicion[0]][posicion[1]] = "+"
+            #         self.tablero_jugador[posicion[2]][posicion[3]] = "+"
+            #         print("Ha fallado la maquina...(enter)")
+            #         input()
+            #         for i in range(20):
+            #             print()
+            #         return False
                     
 
     def PJVsCPU(self,fila,columna,nombre1,modo):
@@ -237,6 +237,25 @@ class Engine:
                 resultado = f"Ha ganado la máquina, puntos: {self.p2}"
             else:
                 resultado = f"Empate: {nombre1}, puntos: {self.p1} - máquina, puntos: {self.p2}"
+        print(resultado)
+        return resultado
+    
+    def CPUVsCPU(self,fila,columna,modo):
+        if self.llenar_tablero(fila, columna) is True:
+            parejas = int((fila*columna)/2)
+            while self.p1 + self.p2 < parejas:
+                while self.p1 + self.p2 < parejas and self.CPU(fila,columna,modo) is True:
+                    self.p1 += 1
+                    print("La maquina 1 ha hecho pareja")
+                while self.p1 + self.p2 < parejas and self.CPU(fila,columna,modo) is True:
+                    self.p2 += 1
+                    print("La maquina 2 ha hecho pareja")
+            if self.p1 > self.p2:
+                resultado = f"Ha ganado: la maquina 1, puntos: {self.p1}"
+            elif self.p1 < self.p2:
+                resultado = f"Ha ganado la máquina 2, puntos: {self.p2}"
+            else:
+                resultado = f"Empate: máquina 1, puntos: {self.p1} - máquina 2, puntos: {self.p2}"
         print(resultado)
         return resultado
             
@@ -278,8 +297,17 @@ class Engine:
                         else:
                             self.PJVsCPU(filas,columnas,nombre,modo.upper())
                             break
-                # case 4:
-
+                case 4:
+                    modo = input("Que dificultad tendrá la maquina?: Fácil, Normal o  Difícil")
+                    while True:
+                        filas = int(input("¿Cuantas filas tendrá el tablero?: "))
+                        columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
+                        if self.tope(filas,columnas) is False:
+                            filas = int(input("¿Cuantas filas tendrá el tablero?: "))
+                            columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
+                        else:
+                            self.CPUVsCPU(filas,columnas,modo.upper())
+                            break
                 case 0:
                     print("¡Hasta la próxima!")
                     break
