@@ -110,10 +110,13 @@ class Engine:
                 print()
                 cont += 1
 
+    #Metodo que comprueba si la posicion elegida es correcta o no
     def comprobar_posicion(self,fila,columna,nombre):
         posiciones = []
         print("Te toca ",nombre)
+        #Muestra el tablero del jugador al usuario
         self.mostrar_tablero_jugador(fila,columna)
+        #elige una posicion y si está dentro de los parametros se descubre la carta, despues vuelve a elegir otra carta
         for i in range(2):
             f = int(input("Dime la fila: "))-1
             c = int(input("Dime la columna: "))-1
@@ -122,39 +125,50 @@ class Engine:
                     print("Esa posicion no está en el tablero")
                     f = int(input("Dime la fila: "))-1
                     c = int(input("Dime la columna: "))-1
+                #si ya está dada la vuelta vuelve a elegir otra posicion
                 elif self.tablero_jugador[f][c] != "+":
                     print("Esta carta ya está dada la vuelta")
                     f = int(input("Dime la fila: "))-1
                     c = int(input("Dime la columna: "))-1
+                #si no está dado la vuelta la carta la descubre y añade la posicion al array posiciones
                 elif self.tablero_jugador[f][c] == "+":
                     self.tablero_jugador[f][c] = self.tablero_original[f][c]
                     posiciones.append(f)
                     posiciones.append(c)
                     break
-            self.mostrar_tablero_jugador(fila,columna) 
+            #vuelve a mostrar el tablero al usuario con la carta dada la vueta
+            self.mostrar_tablero_jugador(fila,columna)
+        #si las dos posiciones que ha dicho el usuario coinciden con las claves devuelve true
         if self.lista_claves[posiciones[0]][posiciones[1]] == self.lista_claves[posiciones[2]][posiciones[3]]:
             return True
         else:
+            #si no son iguales las claves se vuelve a tapar las cartas y se añaden las claves al tablero de la cpu, devuelve false
             self.tablero_cpu.append(self.lista_claves[posiciones[0]][posiciones[1]])
             self.tablero_cpu.append(self.lista_claves[posiciones[2]][posiciones[3]])
             self.tablero_jugador[posiciones[0]][posiciones[1]] = "+"
             self.tablero_jugador[posiciones[2]][posiciones[3]] = "+"
             print("Has fallado...(enter)")
             input()
+            #deja limpia la consola para el siguiente jugador juegue
             for i in range(20):
                 print()
             return False
 
+    #Metodo que realiza la partida de jugador contra jugador
     def PJvsPJ(self,fila,columna,nombre1,nombre2):
+        #si se puede llenar el tablero se puede jugar
         if self.llenar_tablero(fila, columna) is True:
             parejas = int((fila*columna)/2)
+            #este while se seguirá ejecutando hasta que las puntuaciones de los dos jugadores sea igual que la mitad de lo que vale el tablero
             while self.p1 + self.p2 < parejas:
+                #mientras que el jugador1 acierte sigue jugando y suma un punto, si falla pasa de turno
                 while self.p1 + self.p2 < parejas and self.comprobar_posicion(fila,columna,nombre1) is True:
                     print("Has acertado la pareja!!!")
                     self.p1 += 1
                 while self.p1 + self.p2 < parejas and self.comprobar_posicion(fila,columna,nombre2) is True:
                     self.p2 += 1
                     print("Has acertado la pareja!!!")
+            #si la puntuacion 1 es mayor que la dos, gana el jugador uno y viceversa o empate
             if self.p1 > self.p2:
                 resultado = f"Has ganado: {nombre1}, puntos: {self.p1}"
             elif self.p1 < self.p2:
@@ -164,11 +178,15 @@ class Engine:
         print(resultado)
         return resultado
 
+    #Metodo que lleva el control de las jugadas de la CPU
     def CPU(self,fila,columna,modo):
         posicion = []
+        #La dificultad dependerá de lo que elija el usuario
         match modo:
             case "FACIL":
+                #elige dos cartas
                 for n in range(2):
+                    #si la posicion que elige esta sin descubrir da la vuelta a la carta y sale del while sino sigue generando posiciones
                     while True:
                         fila_aleatoria = random.randint(0, fila-1)
                         columna_aleatoria = random.randint(0, columna-1)
@@ -179,7 +197,8 @@ class Engine:
                             print("La máquina elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
                             input()
                             break
-                    self.mostrar_tablero_jugador(fila,columna)  
+                    self.mostrar_tablero_jugador(fila,columna)
+                #si las claves son iguales devuelve True sino las vuelve a tapar  
                 if self.lista_claves[posicion[0]][posicion[1]] == self.lista_claves[posicion[2]][posicion[3]]:
                     return True
                 else:
@@ -220,7 +239,7 @@ class Engine:
             #             print()
             #         return False
                     
-
+    #metodo que controla la partida del jugador contra la cpu, igual que PJVSPJ
     def PJVsCPU(self,fila,columna,nombre1,modo):
         if self.llenar_tablero(fila, columna) is True:
             parejas = int((fila*columna)/2)
@@ -240,6 +259,7 @@ class Engine:
         print(resultado)
         return resultado
     
+    #metodo que lleva el control de la cpu contra otra cpu al igual que PJVSPJ
     def CPUVsCPU(self,fila,columna,modo):
         if self.llenar_tablero(fila, columna) is True:
             parejas = int((fila*columna)/2)
@@ -258,22 +278,25 @@ class Engine:
                 resultado = f"Empate: máquina 1, puntos: {self.p1} - máquina 2, puntos: {self.p2}"
         print(resultado)
         return resultado
-            
+    
+    #metodo que controla todo el juego
     def play(self):
         opcion = 6
         print("¡Bienvenido a Memory!")
         nombre = input("Dime tu nombre: ")
         jugador = Jugador(nombre)
-
+        #si el usurio no introduce un 0 el juego sigue en curso
         while opcion != 0:
             self.vaciar()
             print("Hola ", jugador.getNombre())
             opcion = int(input("¿Que quieres hacer?: \n 1 .Como jugar \n 2. P1 Vs P2 \n 3. P1 Vs CPU \n 4. CPU VS CPU \n 0.Salir \n"))
 
             match opcion:
+                #imprime como se juega a memory
                 case 1:
                     print("Memory es un juego de memoria como su nombre dice, puedes jugar contra otra persona, contra la máquina o la máquina contra la máquina.\nSi eliges jugar contra la máquina puedes jugar en fácil o difícil. Si eliges difícil, en el momento que hayas levantado todas las posiciones pero\nsin emparejar ninguna carta, la máquina ya sabrá sonde está cada carta y su pareja, asique, ¡TEN CUIDADO!\nElige la fila y la columna de la carta que quieres dar la vuelta, vuelve a elegir otra posición y si las dos son iguales ganas un punto y sigues jugando,\nsi fallas le toca al jugador o a la máquina.")
                     break
+                #se juega a PJVSPJ si se puede crear el tablero
                 case 2:
                     nombre2 = input("¿Como se llama el jugador 2?")
                     jugador2 = Jugador(nombre2)
@@ -286,6 +309,7 @@ class Engine:
                         else:
                             self.PJvsPJ(filas,columnas,jugador.getNombre(),jugador2.getNombre())
                             break
+                #se juega a PJVSCPU
                 case 3:
                     modo = input("Que dificultad tendrá la maquina?: Fácil, Normal o  Difícil")
                     while True:
@@ -297,6 +321,7 @@ class Engine:
                         else:
                             self.PJVsCPU(filas,columnas,nombre,modo.upper())
                             break
+                #juega CPUVSCPU
                 case 4:
                     modo = input("Que dificultad tendrá la maquina?: Fácil, Normal o  Difícil")
                     while True:
@@ -308,8 +333,11 @@ class Engine:
                         else:
                             self.CPUVsCPU(filas,columnas,modo.upper())
                             break
+                #sale del juego
                 case 0:
                     print("¡Hasta la próxima!")
                     break
+                #si introduce un numero que no está entre 0 y 4, vuelve a pedir otro
                 case _:
                     print ("No hay esa opción")
+                    break
