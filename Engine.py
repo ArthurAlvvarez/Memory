@@ -11,6 +11,7 @@ class Engine:
         self.lista_claves = []
         self.tablero_cpu = []
         self.usados = []
+        self.lista_claves_cpu = []
         self.p1 = 0
         self.p2 = 0
 
@@ -19,6 +20,7 @@ class Engine:
         self.tablero_jugador = []
         self.lista_claves = []
         self.tablero_cpu = []
+        self.lista_claves_cpu = []
         self.usados = []
         self.p1 = 0
         self.p2 = 0
@@ -46,12 +48,21 @@ class Engine:
                 rows = []
                 for j in range(columna):
                     rows.append("+")
+                self.tablero_cpu.append(rows.copy())
                 self.tablero_jugador.append(rows.copy())
                 self.tablero_original.append(rows.copy())
                 self.lista_claves.append(rows.copy())
             return True
         else:
             return False
+    #vuelve a esconder las posiciones desveladas    
+    def vaciar_maquina(self,fila,columna):
+            self.tablero_cpu = []
+            for i in range(fila):
+                rows = []
+                for j in range(columna):
+                    rows.append("+")
+                self.tablero_cpu.append(rows.copy())
 
     #Metodo que genera un emoji aleatorio del diccionario pero si la clave ya esta guardado en la lista usados vuelve a generar otro emoji distintinto
     def random_emoji(self):
@@ -143,8 +154,12 @@ class Engine:
             return True
         else:
             #si no son iguales las claves se vuelve a tapar las cartas y se añaden las claves al tablero de la cpu, devuelve false
-            self.tablero_cpu.append(self.lista_claves[posiciones[0]][posiciones[1]])
-            self.tablero_cpu.append(self.lista_claves[posiciones[2]][posiciones[3]])
+            self.lista_claves_cpu.append(self.lista_claves[posiciones[0]][posiciones[1]])
+            self.lista_claves_cpu.append(self.lista_claves[posiciones[2]][posiciones[3]])
+
+            self.tablero_cpu[posiciones[0]][posiciones[1]] = self.lista_claves[posiciones[0]][posiciones[1]]
+            self.tablero_cpu[posiciones[2]][posiciones[3]] = self.lista_claves[posiciones[2]][posiciones[3]]
+
             self.tablero_jugador[posiciones[0]][posiciones[1]] = "+"
             self.tablero_jugador[posiciones[2]][posiciones[3]] = "+"
             print("Has fallado...(enter)")
@@ -177,6 +192,10 @@ class Engine:
                 resultado = f"Empate: {nombre1}, puntos: {self.p1} - {nombre2}, puntos: {self.p2}"
         print(resultado)
         return resultado
+    
+
+
+
 
     #Metodo que lleva el control de las jugadas de la CPU
     def CPU(self,fila,columna,modo):
@@ -209,35 +228,72 @@ class Engine:
                     for i in range(20):
                         print()
                     return False
-            # case "Normal":
-            #     for n in range(2):
-            #         while True:
-            #             if len(self.tablero_cpu >= 2):
-            #                 for i in range(len(self.tablero_cpu)):
-            #                     #aqui tengo que encontrar el primer valor que se repita varias veces y ver en que posicion esta y si la carta no está dada la vuelta
-            #             else:        
-            #                 fila_aleatoria = random.randint(0, fila-1)
-            #                 columna_aleatoria = random.randint(0, columna-1)
-            #             if self.tablero_jugador[fila_aleatoria][columna_aleatoria] == '+':
-            #                 self.tablero_jugador[fila_aleatoria][columna_aleatoria] = self.tablero_original[fila_aleatoria][columna_aleatoria]
-            #                 posicion.append(fila_aleatoria)
-            #                 posicion.append(columna_aleatoria)
-            #                 print("La máquina elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
-            #                 input()
-            #                 break
-            #         self.mostrar_tablero_jugador(fila,columna)  
-            #     if self.lista_claves[posicion[0]][posicion[1]] == self.lista_claves[posicion[2]][posicion[3]]:
-            #         return True
-            #     else:
-            #         self.tablero_cpu.append(self.lista_claves[posicion[0]][posicion[1]])
-            #         self.tablero_cpu.append(self.lista_claves[posicion[2]][posicion[3]])
-            #         self.tablero_jugador[posicion[0]][posicion[1]] = "+"
-            #         self.tablero_jugador[posicion[2]][posicion[3]] = "+"
-            #         print("Ha fallado la maquina...(enter)")
-            #         input()
-            #         for i in range(20):
-            #             print()
-            #         return False
+            #caso normal   
+            case "NORMAL":
+                k = 0
+                #si se tiene cuatro claves registradas en el array entra
+                if len(self.lista_claves_cpu) >= 4:
+                    while k < len(self.lista_claves_cpu):
+                        f1 = 0
+                        c1 = 0
+                        f2 = 0
+                        c2 = 0
+                        v = 0
+                        #dos for para recorrer el array de claves y de las claves de la cpu, guarda las dos posiciones donde se encuentra esa clave
+                        for i in range(fila):
+                            for j in range(columna):
+                                if self.lista_claves[i][j] == self.lista_claves_cpu[k]:
+                                    if v == 0:
+                                        f1 = i
+                                        c1 = j
+                                        v += 1
+                                    else:
+                                        f2 = i
+                                        c2 = j
+                                        break
+                        #si en el tablero de la cpu ya está destapada las dos cartas entra
+                        if self.tablero_cpu[f1][c1] != '+' and  self.tablero_cpu[f2][c2] != '+':
+                            #si una de las parejas está tapada entra y devuelve true       
+                            if self.tablero_jugador[f1][c1] == '+':
+                                self.tablero_jugador[f1][c1] =  self.tablero_original[f1][c1]
+                                self.tablero_jugador[f2][c2] =  self.tablero_original[f2][c2]
+                                print("La máquina ha recordado donde hay dos cartas iguales fila: ", f1+1, " columna: ", c1+1, " y fila:", f2+1, " columna: ", c2+1 )
+                                self.mostrar_tablero_jugador(fila,columna)
+                                input()
+                                self.lista_claves_cpu = []
+                                self.vaciar_maquina(fila,columna)
+                                return True
+                        else:
+                            k += 1
+                for n in range(2):
+                    while True:
+                        fila_aleatoria = random.randint(0, fila-1)
+                        columna_aleatoria = random.randint(0, columna-1)
+                        if self.tablero_jugador[fila_aleatoria][columna_aleatoria] == '+':
+                            self.tablero_jugador[fila_aleatoria][columna_aleatoria] = self.tablero_original[fila_aleatoria][columna_aleatoria]
+                            posicion.append(fila_aleatoria)
+                            posicion.append(columna_aleatoria)
+                            print("La máquina elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
+                            input()
+                            break
+                    self.mostrar_tablero_jugador(fila,columna)  
+                if self.lista_claves[posicion[0]][posicion[1]] == self.lista_claves[posicion[2]][posicion[3]]:
+                    return True
+                else:
+                    self.lista_claves_cpu.append(self.lista_claves[posicion[0]][posicion[1]])
+                    self.lista_claves_cpu.append(self.lista_claves[posicion[2]][posicion[3]])
+                    #desvela las claves en el tablero de la cpu
+                    self.tablero_cpu[posicion[0]][posicion[1]] = self.lista_claves[posicion[0]][posicion[1]]
+                    self.tablero_cpu[posicion[2]][posicion[3]] = self.lista_claves[posicion[2]][posicion[3]]
+
+                    self.tablero_jugador[posicion[0]][posicion[1]] = "+"
+                    self.tablero_jugador[posicion[2]][posicion[3]] = "+"
+                    print("Ha fallado la maquina...(enter)")
+                    input()
+                    for i in range(1):
+                        print()
+                    return False
+            
                     
     #metodo que controla la partida del jugador contra la cpu, igual que PJVSPJ
     def PJVsCPU(self,fila,columna,nombre1,modo):
