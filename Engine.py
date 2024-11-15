@@ -368,7 +368,7 @@ class Engine:
                         self.tablero_jugador[posicion[2]][posicion[3]] = "+"
                         print("Ha fallado la maquina",nombre,"...(enter)")
                         input()
-                        for i in range(1):
+                        for i in range(20):
                             print()
                         return False
             
