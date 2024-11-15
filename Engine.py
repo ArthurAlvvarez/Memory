@@ -194,7 +194,7 @@ class Engine:
         return resultado
     
     #metodo que hace que la maquina recuerde una pareja sin realizar de las posciones que ya se han desvelado y están ocultas
-    def CPU_NORMAL(self,fila,columna):
+    def CPU_NORMAL(self,fila,columna,nombre):
         k = 0
         #si se tiene cuatro claves registradas en el array entra
         if len(self.lista_claves_cpu) >= 4:
@@ -222,7 +222,7 @@ class Engine:
                     if self.tablero_jugador[f1][c1] == '+':
                         self.tablero_jugador[f1][c1] =  self.tablero_original[f1][c1]
                         self.tablero_jugador[f2][c2] =  self.tablero_original[f2][c2]
-                        print("La máquina ha recordado donde hay dos cartas iguales fila: ", f1+1, " columna: ", c1+1, " y fila:", f2+1, " columna: ", c2+1, " (enter..)" )
+                        print("La máquina ",nombre," ha recordado donde hay dos cartas iguales fila: ", f1+1, " columna: ", c1+1, " y fila:", f2+1, " columna: ", c2+1, " (enter..)" )
                         self.mostrar_tablero_jugador(fila,columna)
                         input()
                         self.lista_claves_cpu = []
@@ -234,7 +234,7 @@ class Engine:
             return False
 
     #metodo que hace que la maquina tenga constante "memoria"    
-    def CPU_DIFICIL(self,fila,columna):
+    def CPU_DIFICIL(self,fila,columna,nombre):
         k = 0
         #si se tiene cuatro claves registradas en el array entra
         if len(self.lista_claves_cpu) >= 4:
@@ -262,7 +262,7 @@ class Engine:
                     if self.tablero_jugador[f1][c1] == '+':
                         self.tablero_jugador[f1][c1] =  self.tablero_original[f1][c1]
                         self.tablero_jugador[f2][c2] =  self.tablero_original[f2][c2]
-                        print("La máquina ha recordado donde hay dos cartas iguales fila: ", f1+1, " columna: ", c1+1, " y fila:", f2+1, " columna: ", c2+1, " (enter..)" )
+                        print("La máquina ",nombre," ha recordado donde hay dos cartas iguales fila: ", f1+1, " columna: ", c1+1, " y fila:", f2+1, " columna: ", c2+1, " (enter..)" )
                         self.mostrar_tablero_jugador(fila,columna)
                         input()
                         return True
@@ -274,7 +274,7 @@ class Engine:
             return False
 
     #Metodo que lleva el control de las jugadas de la CPU
-    def CPU(self,fila,columna,modo):
+    def CPU(self,fila,columna,modo,nombre):
         posicion = []
         #La dificultad dependerá de lo que elija el usuario
         match modo:
@@ -289,7 +289,7 @@ class Engine:
                             self.tablero_jugador[fila_aleatoria][columna_aleatoria] = self.tablero_original[fila_aleatoria][columna_aleatoria]
                             posicion.append(fila_aleatoria)
                             posicion.append(columna_aleatoria)
-                            print("La máquina elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
+                            print("La máquina ",nombre," elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
                             input()
                             break
                     self.mostrar_tablero_jugador(fila,columna)
@@ -307,7 +307,7 @@ class Engine:
             #caso normal   
             case "NORMAL":
                 #si el metodo CPU_NORMAL devuelve true es que ha recordado una pareja, sino elige aleatoriamente
-                if self.CPU_NORMAL(fila,columna) == True:
+                if self.CPU_NORMAL(fila,columna,nombre) == True:
                     return True
                 else:    
                     for n in range(2):
@@ -318,7 +318,7 @@ class Engine:
                                 self.tablero_jugador[fila_aleatoria][columna_aleatoria] = self.tablero_original[fila_aleatoria][columna_aleatoria]
                                 posicion.append(fila_aleatoria)
                                 posicion.append(columna_aleatoria)
-                                print("La máquina elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
+                                print("La máquina ",nombre," elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
                                 input()
                                 break
                         self.mostrar_tablero_jugador(fila,columna)  
@@ -333,14 +333,14 @@ class Engine:
 
                         self.tablero_jugador[posicion[0]][posicion[1]] = "+"
                         self.tablero_jugador[posicion[2]][posicion[3]] = "+"
-                        print("Ha fallado la maquina...(enter)")
+                        print("Ha fallado la maquina",nombre,"...(enter)")
                         input()
                         for i in range(1):
                             print()
                         return False
             case "DIFICIL":
                 #si el metodo CPU_NORMAL devuelve true es que ha recordado una pareja, sino elige aleatoriamente
-                if self.CPU_DIFICIL(fila,columna) == True:
+                if self.CPU_DIFICIL(fila,columna,nombre) == True:
                     return True
                 else:    
                     for n in range(2):
@@ -351,7 +351,7 @@ class Engine:
                                 self.tablero_jugador[fila_aleatoria][columna_aleatoria] = self.tablero_original[fila_aleatoria][columna_aleatoria]
                                 posicion.append(fila_aleatoria)
                                 posicion.append(columna_aleatoria)
-                                print("La máquina elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
+                                print("La máquina ",nombre," elige la fila: ", fila_aleatoria + 1, " y la columna: ", columna_aleatoria + 1, "...(enter)")
                                 input()
                                 break
                         self.mostrar_tablero_jugador(fila,columna)  
@@ -366,7 +366,7 @@ class Engine:
 
                         self.tablero_jugador[posicion[0]][posicion[1]] = "+"
                         self.tablero_jugador[posicion[2]][posicion[3]] = "+"
-                        print("Ha fallado la maquina...(enter)")
+                        print("Ha fallado la maquina",nombre,"...(enter)")
                         input()
                         for i in range(1):
                             print()
@@ -374,14 +374,14 @@ class Engine:
             
                     
     #metodo que controla la partida del jugador contra la cpu, igual que PJVSPJ
-    def PJVsCPU(self,fila,columna,nombre1,modo):
+    def PJVsCPU(self,fila,columna,nombre1,modo,nombre2):
         if self.llenar_tablero(fila, columna) is True:
             parejas = int((fila*columna)/2)
             while self.p1 + self.p2 < parejas:
                 while self.p1 + self.p2 < parejas and self.comprobar_posicion(fila,columna,nombre1) is True:
                     print("Has acertado la pareja!!!")
                     self.p1 += 1
-                while self.p1 + self.p2 < parejas and self.CPU(fila,columna,modo) is True:
+                while self.p1 + self.p2 < parejas and self.CPU(fila,columna,modo,nombre2) is True:
                     self.p2 += 1
                     print("La maquina ha hecho pareja")
             if self.p1 > self.p2:
@@ -394,14 +394,14 @@ class Engine:
         return resultado
       
     #metodo que lleva el control de la cpu contra otra cpu al igual que PJVSPJ
-    def CPUVsCPU(self,fila,columna,modo):
+    def CPUVsCPU(self,fila,columna,modo,nombre,nombre2):
         if self.llenar_tablero(fila, columna) is True:
             parejas = int((fila*columna)/2)
             while self.p1 + self.p2 < parejas:
-                while self.p1 + self.p2 < parejas and self.CPU(fila,columna,modo) is True:
+                while self.p1 + self.p2 < parejas and self.CPU(fila,columna,modo,nombre) is True:
                     self.p1 += 1
                     print("La maquina 1 ha hecho pareja")
-                while self.p1 + self.p2 < parejas and self.CPU(fila,columna,modo) is True:
+                while self.p1 + self.p2 < parejas and self.CPU(fila,columna,modo,nombre2) is True:
                     self.p2 += 1
                     print("La maquina 2 ha hecho pareja")
             if self.p1 > self.p2:
@@ -445,7 +445,7 @@ class Engine:
                             break
                 #se juega a PJVSCPU
                 case 3:
-                    modo = input("Que dificultad tendrá la maquina?: Fácil, Normal o  Difícil: ")
+                    modo = input("Que dificultad tendrá la maquina?: Facil, Normal o  Dificil: ")
                     while True:
                         filas = int(input("¿Cuantas filas tendrá el tablero?: "))
                         columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
@@ -453,11 +453,11 @@ class Engine:
                             filas = int(input("¿Cuantas filas tendrá el tablero?: "))
                             columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
                         else:
-                            self.PJVsCPU(filas,columnas,nombre,modo.upper())
+                            self.PJVsCPU(filas,columnas,nombre,modo.upper(),'1')
                             break
                 #juega CPUVSCPU
                 case 4:
-                    modo = input("Que dificultad tendrá la maquina?: Fácil, Normal o  Difícil")
+                    modo = input("Que dificultad tendrá la maquina?: Facil, Normal o  Dificil: ")
                     while True:
                         filas = int(input("¿Cuantas filas tendrá el tablero?: "))
                         columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
@@ -465,7 +465,7 @@ class Engine:
                             filas = int(input("¿Cuantas filas tendrá el tablero?: "))
                             columnas = int(input("¿Cuantas columnas tendrá el tablero?: "))
                         else:
-                            self.CPUVsCPU(filas,columnas,modo.upper())
+                            self.CPUVsCPU(filas,columnas,modo.upper(),'1','2')
                             break
                 #sale del juego
                 case 0:
