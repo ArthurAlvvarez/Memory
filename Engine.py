@@ -337,7 +337,7 @@ class Engine:
                 case 0:
                     print("¡Hasta la próxima!")
                     break
-                #si introduce un numero que no está entre 0 y 4, vuelve a pedir otro
+                #si introduce un numero que no está entre 0 y 4, vuelve a pedir
                 case _:
                     print ("No hay esa opción")
                     break
